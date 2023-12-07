@@ -87,14 +87,14 @@ void loop() {
                    digitalRead(11) << 1 | digitalRead(12);
 
     // Right joystick (PIN A0-A2)
-    data.right.x = deadzoneCenter(analogRead(A0));
-    data.right.y = deadzoneCenter(analogRead(A1));
-    data.right.z = deadzoneCenter(analogRead(A2));
+    data.right.x = deadzoneCenter(analogRead(A0), false);
+    data.right.y = deadzoneCenter(analogRead(A1), true);
+    data.right.z = deadzoneCenter(analogRead(A2), false);
 
     // Left joystick (PIN A3-A5)
-    data.left.x = deadzoneCenter(analogRead(A3));
-    data.left.y = deadzoneCenter(analogRead(A4));
-    data.left.z = deadzoneCenter(analogRead(A5));
+    data.left.x = deadzoneCenter(analogRead(A3), true);
+    data.left.y = deadzoneCenter(analogRead(A4), false);
+    data.left.z = deadzoneCenter(analogRead(A5), false);
 
     sendData();
 }
@@ -110,10 +110,13 @@ void sendCode(uint16_t code) { Serial.write((uint8_t*)&code, 2); }
  * Rescales the values of joystick axes
  *
  * @param value: A joystick axis value read on 10bits
+ * @param invert: inverts the joystick value, to account for 
+ * symmetrical mounting of the joysticks
  * @returns The axis value rescaled in the [-512, 511] range,
  * with a deadzone of 50LSB
  */
-int16_t deadzoneCenter(uint16_t value) {
+int16_t deadzoneCenter(uint16_t value, bool invert) {
+    if (invert) value = 1023 - value;
     if (value >= 512 - DEADZONE && value < 512 + DEADZONE) return 0;
     return value - 512;
 }
