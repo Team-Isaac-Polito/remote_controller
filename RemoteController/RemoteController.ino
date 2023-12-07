@@ -21,7 +21,7 @@ typedef struct {
 
 void sendCode(uint16_t code);
 void sendData();
-int16_t deadzoneCenter(uint16_t value);
+int16_t deadzoneCenter(uint16_t value, bool invert);
 
 bool paused = true;
 sensors_t data;
