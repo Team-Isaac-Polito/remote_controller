@@ -2,17 +2,19 @@ import rclpy
 import serial
 import struct
 import time
-from geometry_msgs.msg import Twist
+from reseq_interfaces.msg import Remote
 from sys import exit
 from rclpy.node import Node
 
 serial_port = "/dev/ttyUSB0"
 baud_rate = 9600
+remote_topic = "/remote"
+
 
 class SerialPublisher(Node):
     def __init__(self):
         super().__init__("remote_controller")
-        self.publisher = self.create_publisher(Twist, "/cmd_vel", 10)
+        self.publisher = self.create_publisher(Remote, remote_topic, 10)
 
         try:
             self.serial = serial.Serial(serial_port, baud_rate)
@@ -51,14 +53,25 @@ class SerialPublisher(Node):
                     joy_left = data[1:4]
                     joy_right = data[4:]
 
-                    self.get_logger().info(f"Received {joy_right}")
-                    msg = Twist()
-                    # test with just forward/backwards movement 
-                    msg.linear.x = float(joy_right[0])
+                    self.get_logger().info(f"left:{joy_left}, right:{joy_right}, buttons:{buttons}")
+
+                    msg = Remote()
+                    msg.left.x = self.scale(joy_left[0])
+                    msg.left.y = self.scale(joy_left[1])
+                    msg.left.z = self.scale(joy_left[2])
+                    msg.right.x = self.scale(joy_right[0])
+                    msg.right.y = self.scale(joy_right[1])
+                    msg.right.z = self.scale(joy_right[2])
+                    # TODO: send buttons and switches
+
                     self.publisher.publish(msg)
                 else:
                     print("error")
                     # TODO: restart Arduino
+
+    # scale values from [-512,511] to [-1,1]
+    def scale(self, m):
+        return (m+512)/(511.5)-1
 
     def run(self):
         self.start_arduino()
