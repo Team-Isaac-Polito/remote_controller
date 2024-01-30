@@ -72,7 +72,7 @@ class SerialPublisher(Node):
     # scale values from [-512,511] to [-1,1]
     def scale(self, m):
         if (m==0):
-            return 0
+            return 0.0
         return round((m+512)/(511.5)-1, 4)
 
     def run(self):
