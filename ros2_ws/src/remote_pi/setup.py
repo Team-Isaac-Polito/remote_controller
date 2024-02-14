@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'remote = remote_pi.remote:main'
+            'remote = remote_pi.remote:main',
+            'camera = remote_pi.camera:main'
         ],
     },
 )
