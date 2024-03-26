@@ -66,8 +66,9 @@ class SerialPublisher(Node):
 
                     self.publisher.publish(msg)
                 else:
-                    print("error")
-                    # TODO: restart Arduino
+                    print("Arduino error code! Restarting...")
+                    self.start_arduino()
+                    time.sleep(2)
 
     # scale values from [-512,511] to [-1,1]
     def scale(self, m):
