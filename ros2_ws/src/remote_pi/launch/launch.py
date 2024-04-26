@@ -7,10 +7,5 @@ def generate_launch_description():
             package='remote_pi',
             executable='remote',
             name='remote',
-        ),
-        Node(
-            package='remote_pi',
-            executable='camera',
-            name='camera',
         )
     ])
