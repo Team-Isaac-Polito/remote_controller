@@ -26,9 +26,9 @@ class RVizWidget : public ReseQWidget {
    public:
     enum class RVizView {
         THIRD_PERSON = 0,
+        TOP_DOWN,
         FIRST_PERSON,
         THIRD_PERSON_FRONT,
-        TOP_DOWN,
         ISOMETRIC_LEFT,
         ISOMETRIC_RIGHT,
         SIDE_LEFT,

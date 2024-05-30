@@ -36,13 +36,14 @@ void RVizWidget::initializeRViz() {
 
 void RVizWidget::loadViews() {
     rviz_common::ViewController* view;
+
     view = view_manager_->create("rviz_default_plugins/Orbit");
     view->setName("Third Person");
     view->subProp("Distance")->setValue(3);
     view->subProp("Pitch")->setValue(0.3);
     view->subProp("Yaw")->setValue(3.1415);
 
-    view_manager_->add(view, 1);
+    view_manager_->add(view, 0);
     view_manager_->setCurrentFrom(view);
 
     view = view_manager_->create("rviz_default_plugins/TopDownOrtho");
@@ -50,7 +51,54 @@ void RVizWidget::loadViews() {
     view->subProp("Scale")->setValue(125);
     view->subProp("Angle")->setValue(-1.57);
 
+    view_manager_->add(view, 1);
+
+    view = view_manager_->create("rviz_default_plugins/FPS");
+    view->setName("First Person");
+    view->subProp("Position")->subProp("Z")->setValue(0.5);
+
     view_manager_->add(view, 2);
+
+    view = view_manager_->create("rviz_default_plugins/Orbit");
+    view->setName("Third Person (front)");
+    view->subProp("Distance")->setValue(3);
+    view->subProp("Pitch")->setValue(0.3);
+    view->subProp("Yaw")->setValue(0);
+
+    view_manager_->add(view, 3);
+
+    view = view_manager_->create("rviz_default_plugins/Orbit");
+    view->setName("Isometric (left)");
+    view->subProp("Distance")->setValue(4);
+    view->subProp("Pitch")->setValue(0.3);
+    view->subProp("Yaw")->setValue(2.356);
+
+    view_manager_->add(view, 4);
+
+    view = view_manager_->create("rviz_default_plugins/Orbit");
+    view->setName("Isometric (right)");
+    view->subProp("Distance")->setValue(4);
+    view->subProp("Pitch")->setValue(0.3);
+    view->subProp("Yaw")->setValue(3.927);
+
+    view_manager_->add(view, 5);
+
+    view = view_manager_->create("rviz_default_plugins/Orbit");
+    view->setName("Side (left)");
+    view->subProp("Distance")->setValue(4);
+    view->subProp("Pitch")->setValue(0.3);
+    view->subProp("Yaw")->setValue(1.57);
+
+    view_manager_->add(view, 6);
+
+    view = view_manager_->create("rviz_default_plugins/Orbit");
+    view->setName("Side (right)");
+    view->subProp("Distance")->setValue(4);
+    view->subProp("Pitch")->setValue(0.3);
+    view->subProp("Yaw")->setValue(4.712);
+
+    view_manager_->add(view, 7);
+}
 }
 
 void RVizWidget::displayGrid(bool grid) { grid_->setEnabled(grid); }
