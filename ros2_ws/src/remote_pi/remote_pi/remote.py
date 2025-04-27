@@ -62,7 +62,10 @@ class SerialPublisher(Node):
                     msg.right.x = self.scale(joy_right[0])
                     msg.right.y = self.scale(joy_right[1])
                     msg.right.z = self.scale(joy_right[2])
-                    # TODO: send buttons and switches
+                    
+                    # buttons are in the first 10 bits of the first byte
+                    # they are inverted due to little endian convention
+                    msg.buttons = [bool((buttons >> bit) & 0x1) for bit in range(9, -1, -1)]
 
                     self.publisher.publish(msg)
                 else:
