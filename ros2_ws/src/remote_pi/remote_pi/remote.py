@@ -5,16 +5,22 @@ import time
 from reseq_interfaces.msg import Remote
 from sys import exit
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, HistoryPolicy, ReliabilityPolicy
 
 serial_port = "/dev/ttyUSB0"
 baud_rate = 9600
 remote_topic = "/remote"
+qos = QoSProfile(
+    reliability=ReliabilityPolicy.BEST_EFFORT, 
+    history=HistoryPolicy.KEEP_LAST,
+    depth=1
+)
 
 
 class SerialPublisher(Node):
     def __init__(self):
         super().__init__("remote_controller")
-        self.publisher = self.create_publisher(Remote, remote_topic, 10)
+        self.publisher = self.create_publisher(Remote, remote_topic, qos)
 
         try:
             self.serial = serial.Serial(serial_port, baud_rate)
